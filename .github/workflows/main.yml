@@ -1,4 +1,4 @@
-name: Playwright Python Tests
+name: Playwright Test Runner
 
 on:
   workflow_dispatch:
@@ -8,19 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.10'   # You can use 3.9 or 3.11 as well
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          python -m playwright install --with-deps
+          python -m pip install --upgrade pip
+          pip install playwright pytest
+          playwright install --with-deps
 
-      - name: Run Playwright Tests
+      - name: Run Playwright tests
         run: |
-          python runner.py
+          pytest --maxfail=1 --disable-warnings -q
