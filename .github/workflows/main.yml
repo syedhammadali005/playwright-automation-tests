@@ -1,10 +1,6 @@
-name: Playwright Test Runner
+name: Playwright Python Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -13,21 +9,18 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
+          python -m playwright install --with-deps
 
-      - name: Install Playwright Browsers
-        run: |
-          playwright install
-
-      - name: Run Tests
+      - name: Run Playwright Tests
         run: |
           python runner.py
